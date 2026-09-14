@@ -162,6 +162,66 @@ async function build(spec) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   THE HERO BAG — origin of the page-long bean stream
+   ═══════════════════════════════════════════════════════════════════════
+   The pack photograph is a high-angle view into an open bag. Turned through
+   180° the mouth faces down and the beans inside sit right at the lip, which
+   is exactly the frame the bean stream needs to fall out of. The edges are
+   masked to alpha so it dissolves into the hero rather than sitting on it as
+   a pasted rectangle, and it is graded down so it never competes with the
+   seal.
+
+   MOUTH_AT below is where BeanFlow spawns from, as a fraction of the
+   delivered image box. Change the crop and you must re-check it.
+   ═══════════════════════════════════════════════════════════════════════ */
+export const MOUTH_AT = { x: 0.36, y: 0.84 }
+
+async function buildHeroBag() {
+  const W = 900
+  const H = 1200
+  const body = await sharp(join(SRC, BAG))
+    .rotate(180)
+    .extract({ left: 230, top: 280, width: 1200, height: 1600 })
+    .resize(W, H, { fit: 'cover' })
+    .modulate({ brightness: 0.46, saturation: 0.34 })
+    .removeAlpha()
+    .raw()
+    .toBuffer()
+
+  // Soft alpha falloff on every edge, so the bag dissolves into the hero
+  // instead of sitting on it as a pasted rectangle. The falloff has to become
+  // a real alpha channel: sharp's dest-in reads the mask's alpha, not its
+  // luminance, so a greyscale mask composited that way is a no-op.
+  const grad = (inner) =>
+    sharp(Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${inner}</svg>`))
+      .greyscale()
+      .raw()
+      .toBuffer()
+
+  const radial = await grad(
+    `<defs><radialGradient id="m" cx="50%" cy="48%" r="52%">
+       <stop offset="0%" stop-color="#fff"/><stop offset="26%" stop-color="#fff"/>
+       <stop offset="100%" stop-color="#000"/>
+     </radialGradient></defs><rect width="${W}" height="${H}" fill="url(#m)"/>`,
+  )
+  const edges = await grad(
+    `<defs><linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+       <stop offset="0%" stop-color="#000"/><stop offset="24%" stop-color="#fff"/>
+       <stop offset="78%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/>
+     </linearGradient></defs><rect width="${W}" height="${H}" fill="url(#t)"/>`,
+  )
+  const alpha = Buffer.alloc(W * H)
+  for (let i = 0; i < alpha.length; i++) alpha[i] = (radial[i] * edges[i]) / 255
+
+  const out = await sharp(body, { raw: { width: W, height: H, channels: 3 } })
+    .joinChannel(alpha, { raw: { width: W, height: H, channels: 1 } })
+    .webp({ quality: 84, effort: 6, alphaQuality: 92 })
+    .toBuffer()
+  await sharp(out).toFile(join(OUT, 'hero-bag.webp'))
+  console.log(`  ${'hero-bag'.padEnd(20)} ${W}×${H}  ${(out.length / 1024).toFixed(0)} KB   ← ${BAG} (rotated)`)
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    THE SEAL
    The supplied artwork already carries an alpha channel, so it only needs
    trimming to the badge and exporting at the sizes the site asks for.
@@ -211,5 +271,6 @@ async function buildLogo() {
 
 console.log('\nBuilding images from src/assets/source/…\n')
 await buildLogo()
+await buildHeroBag()
 for (const spec of DERIVED) await build(spec)
 console.log('\nDone.\n')

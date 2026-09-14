@@ -5,17 +5,15 @@
  *  One idea, several forms, so the same graphic is never simply repeated:
  *
  *    BeanGlyph     a single bean            heritage, transitions, final CTA
- *    Steam         rising aroma lines       brew
  *    FilterRings   concentric filter mesh   craft, chennai, worldwide
  *    GroundsDots   scattered particles      journey, seams
  *
  *  All are decorative: aria-hidden, and all sit behind content.
+ *
+ *  The rising aroma lives in AromaFlow, not here — it is part of the page-long
+ *  bean system rather than a section-local decoration.
  * ═══════════════════════════════════════════════════════════════════════════
  */
-import { useRef } from 'react'
-import { gsap } from '../../lib/animations'
-import { useGsapContext } from '../../hooks/useGsapContext'
-import { useReducedMotion } from '../../hooks/useMediaQuery'
 
 export function BeanGlyph({
   className,
@@ -65,57 +63,6 @@ export function BeanSolid({ className }: { className?: string }) {
       />
       <path d="M18 22A52 34 0 0 1 68 9" fill="none" stroke="#EBC59B" strokeWidth="3" strokeLinecap="round" opacity=".38" />
     </svg>
-  )
-}
-
-/**
- * Aroma. Three slow cream curves drifting upward — steam, never smoke.
- * Pure SVG + GSAP, no canvas, no particles.
- */
-export function Steam({ className, opacity = 0.3 }: { className?: string; opacity?: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const reduced = useReducedMotion()
-
-  useGsapContext(
-    ref,
-    () => {
-      if (reduced) return
-      gsap.utils.toArray<SVGPathElement>('[data-steam]').forEach((path, i) => {
-        gsap.set(path, { transformOrigin: '50% 100%' })
-        gsap
-          .timeline({ repeat: -1, delay: i * 1.9 })
-          .fromTo(
-            path,
-            { autoAlpha: 0, yPercent: 14, scaleX: 0.86, scaleY: 0.9 },
-            { autoAlpha: 1, duration: 2.6, ease: 'sine.out' },
-          )
-          .to(
-            path,
-            { yPercent: -22, scaleX: 1.16, scaleY: 1.1, duration: 7.4, ease: 'sine.inOut' },
-            0,
-          )
-          .to(path, { autoAlpha: 0, duration: 3.2, ease: 'sine.in' }, 3.6)
-      })
-    },
-    [reduced],
-  )
-
-  return (
-    <div ref={ref} className={className} aria-hidden="true">
-      <svg viewBox="0 0 200 320" className="h-full w-full" focusable="false">
-        <g
-          fill="none"
-          stroke="var(--accent)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          opacity={opacity}
-        >
-          <path data-steam d="M72 312C72 250 44 232 60 178S88 108 74 54" />
-          <path data-steam d="M100 316C100 244 128 226 112 172S86 100 102 44" />
-          <path data-steam d="M132 312C132 256 156 236 142 186S120 116 134 66" />
-        </g>
-      </svg>
-    </div>
   )
 }
 

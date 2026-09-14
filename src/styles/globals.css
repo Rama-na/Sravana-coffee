@@ -138,6 +138,10 @@
     overflow-x: clip;
   }
 
+  .site {
+    position: relative;
+  }
+
   #root {
     /* isolation makes #root a blending boundary, so the grain overlay inside
        it never reaches the <html> background. Without an opaque ground of its
@@ -367,6 +371,163 @@
   .link-underline:focus-visible::after,
   .link-underline[data-active='true']::after {
     transform: scaleX(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BEAN FLOW — the page-long coffee stream
+   ═══════════════════════════════════════════════════════════════════════════
+   Two fixed layers. The back one sits at z-index -1 inside #root, which puts
+   it above the page background but below every piece of content, so those
+   beans genuinely pass behind headings and photographs. The front one sits
+   above the content but below the navbar. Real depth, not three opacities.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  .beanflow {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: layout paint;
+  }
+
+  .beanflow--back {
+    z-index: -1;
+  }
+
+  /* Above the page and the grain, below the navbar (120) and the menu (110). */
+  .beanflow--front {
+    z-index: 96;
+  }
+
+  .beanflow__bean {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 46px;
+    height: 31px;
+    /* transform only. A drop-shadow here, or any filter on the moving layer,
+       forces the whole layer to re-raster every frame — it cost ~17ms/frame. */
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Set once per spawn while the roast is on, never per frame. */
+  .beanflow__bean--roasted {
+    filter: brightness(0.74) saturate(0.86);
+  }
+
+  /* Cream beans, for the rare case of a very dark ground. */
+  .beanflow[data-theme='cream'] .beanflow__bean {
+    filter: sepia(0.3) brightness(1.5) saturate(0.6);
+  }
+
+  .beanflow__ground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 9px;
+    height: 7px;
+    border-radius: 46% 54% 52% 48%;
+    /* A warm speck with a dark rim, so grounds read both on the dark roast
+       ground and on the mid-brown grounds texture they fall through. */
+    background: #a9713f;
+    box-shadow:
+      inset -1px -1px 1px rgb(0 0 0 / 0.5),
+      0 0 0 0.6px rgb(26 13 5 / 0.7);
+    will-change: transform;
+  }
+
+  @media (max-width: 639px) {
+    .beanflow__bean {
+      width: 34px;
+      height: 23px;
+    }
+  }
+
+  /* Reduced motion: a handful of beans resting along the route, page-level
+     and absolutely positioned, so nothing moves and nothing follows you. */
+  .beanflow-static {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .beanflow-static__bean {
+    position: absolute;
+    width: 54px;
+    height: 37px;
+    opacity: 0.3;
+  }
+
+  /* ── aroma ──────────────────────────────────────────────────────────── */
+  .aromaflow {
+    position: fixed;
+    inset-block: 8vh 4vh;
+    left: 0;
+    width: 22vw;
+    min-width: 190px;
+    max-width: 340px;
+    z-index: 95;
+    pointer-events: none;
+    contain: layout paint;
+    will-change: transform, opacity;
+    /* Screen-only, so if the aroma ever reaches a pale section it fades out
+       rather than drawing hard lines across it. */
+    mix-blend-mode: screen;
+  }
+
+  .aromaflow svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── debug ──────────────────────────────────────────────────────────── */
+  .beanflow-debug {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 200;
+    padding: 7px 11px;
+    font: 11px/1.5 ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    color: #9effc8;
+    background: rgb(0 0 0 / 0.72);
+    border: 1px solid rgb(158 255 200 / 0.35);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* path guide */
+  .beanflow-debug::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: var(--dbg-x, 50%);
+    width: 1px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(158 255 200 / 0.5) 0 6px,
+      transparent 6px 14px
+    );
+  }
+
+  /* origin marker */
+  .beanflow-debug::after {
+    content: '';
+    position: fixed;
+    left: var(--dbg-ox, -100px);
+    top: var(--dbg-oy, -100px);
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 1.5px solid #ff5f8f;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgb(255 95 143 / 0.25);
   }
 }
 

@@ -20,6 +20,7 @@ invented business data — see [What you still need to supply](#what-you-still-n
 - [Deploying to GitHub Pages](#deploying-to-github-pages)
 - [The photography](#the-photography)
 - [The logo](#the-logo)
+- [The bean stream](#the-bean-stream)
 - [Editing the content](#editing-the-content)
 - [WhatsApp, Maps and Instagram](#whatsapp-maps-and-instagram)
 - [What you still need to supply](#what-you-still-need-to-supply)
@@ -174,6 +175,83 @@ read clearly:
 The seal is never recoloured, stretched or filtered. To swap in new artwork,
 replace `src/assets/source/saravana-seal-original.webp` and re-run the script.
 
+## The bean stream
+
+The page has one continuous visual element running through it. Beans spill from
+the bag in the hero and keep falling for the length of the site — but they do
+not simply fall forever. They darken through the roast, break down into grounds
+at the bean-to-grounds transition, all but disappear across the brew while the
+aroma rises in their place, and return for the closing sections. It is the
+making of a cup of coffee, told as one continuous motion.
+
+### The three beats
+
+| | Where | What happens |
+|---|---|---|
+| 1 | Hero | Beans emerge from the mouth of the bag |
+| 2 | Roast transition | Beans thin to ~6% and grounds fill the air |
+| 3 | The first sip | Grounds clear, the stream inverts and aroma rises |
+
+### How it is put together
+
+* **`src/components/BeanFlow.tsx`** — one instance, mounted at page level in
+  `App.tsx` and never unmounted, so the stream crosses every section boundary
+  rather than restarting at each one.
+* **`src/components/AromaFlow.tsx`** — what the stream turns into across the
+  brew. Four slow curves, screen-blended, nothing more.
+* **`src/lib/flow.ts`** — the shared state. Scroll, velocity, the page-long
+  path and the phase mix are computed **once per frame** and read by both
+  components, so the two halves can never disagree about where the coffee is.
+
+**Two layers, real depth.** The back layer sits at `z-index: -1` inside
+`#root`: above the page background, below every piece of content, so those
+beans genuinely pass behind headings and photographs. The front layer sits at
+`z-index: 96`, above the content and below the navbar. Depth is not faked with
+opacity alone — size, speed and opacity all track it.
+
+**The path** is anchored to real sections rather than to fixed scroll
+fractions, so it keeps following the content when a section's height changes.
+Edit `ANCHORS` in `src/lib/flow.ts` to reroute it.
+
+### Tuning
+
+```tsx
+<BeanFlow
+  enabled          // false removes it entirely
+  density="medium" // 'low' | 'medium' | 'high'
+  speed={1}        // fall-speed multiplier
+  theme="brown"    // 'brown' | 'cream'
+  mobileDensity={0.62}
+/>
+```
+
+Roughly 13 beans are in the air at once on desktop and 5–7 on mobile, from a
+pool of 34 and 16. Nothing is created or destroyed while the page runs.
+
+### Performance
+
+The loop writes `translate3d` and nothing else, reads no layout, and idles
+while the tab is hidden. Measured against the same page with the layers
+removed, the system is **not distinguishable from baseline** in frame timing.
+
+Two things were expensive and are worth not reintroducing:
+
+* a `filter` on either moving layer — it forces the whole layer to re-raster
+  every frame and cost about 17 ms/frame on its own. The roast darkening is a
+  class toggled on a phase flip instead.
+* `drop-shadow` on individual beans, for the same reason.
+
+### Reduced motion
+
+Under `prefers-reduced-motion: reduce` there is no loop and no falling: five
+beans rest along the route as static decoration, and the aroma does not render.
+
+### Debugging
+
+Append `?beans` (or `?debug`) to the URL for a live readout of particle counts,
+scroll velocity, path position and the phase mix, plus a path guide and a
+marker on the origin point. Off in production.
+
 ## Editing the content
 
 All copy lives in `src/data/`. No component hard-codes a sentence, a price, a
@@ -257,6 +335,7 @@ src/
   assets/source/      photographic masters, committed untouched
   assets/images/      delivered crops (built from source/) + remaining artwork
   assets/logo/        the seal, trimmed and exported
+  assets/beans/       the three bean variants used by the stream
   components/
     ui/               Logo, Button, Figure, SectionLabel, ThemeShift, Motifs
     reactbits/        BlurText, ScrollFloat, ScrollReveal, Magnet,
@@ -275,6 +354,10 @@ viewport. Every band registers itself with the registry in `src/lib/theme.ts`,
 and a single scroll-driven controller in `App.tsx` resolves the correct theme
 from the actual scroll position on every update — so a scroll jump, an anchor
 link or a restored scroll position can never leave the page a stale colour.
+
+**The bean stream.** One page-level system, described in full above. It has
+its own shared state in `src/lib/flow.ts` rather than hooking into the section
+timelines, because it has to outlive all of them.
 
 **Motion.** `src/lib/animations.ts` holds the shared timing and the reusable
 primitives (`revealUp`, `revealFade`, `splitReveal`, `imageParallax`,

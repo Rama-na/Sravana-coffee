@@ -5,6 +5,8 @@ import { invalidateBands, setInitialTheme, syncTheme } from './lib/theme'
 import { initDebug } from './lib/debug'
 import type { Product } from './data/products'
 
+import { BeanFlow } from './components/BeanFlow'
+import { AromaFlow } from './components/AromaFlow'
 import { Preloader } from './components/Preloader'
 import { Navbar } from './components/Navbar'
 import { Hero } from './components/Hero'
@@ -72,13 +74,19 @@ export default function App() {
   }, [])
 
   return (
-    <>
+    <div className="site">
       <a className="skip-link" href="#heritage">
         Skip to content
       </a>
       <div className="grain" aria-hidden="true" />
 
       {!ready && <Preloader onDone={() => setReady(true)} />}
+
+      {/* The one continuous element. Mounted here and never unmounted, so the
+          stream crosses every section boundary instead of restarting at each
+          one — that continuity is the point of it. */}
+      <BeanFlow />
+      <AromaFlow />
 
       <Navbar />
 
@@ -129,6 +137,6 @@ export default function App() {
       </main>
 
       <Footer />
-    </>
+    </div>
   )
 }
