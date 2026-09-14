@@ -109,6 +109,7 @@ export function RoastTransition() {
   return (
     <section
       ref={ref}
+      id="roast-transition"
       aria-label="From bean to grounds"
       className="relative h-[70svh] motion-safe:h-[112svh] lg:motion-safe:h-[152svh]"
     >

@@ -4,7 +4,6 @@ import { useGsapContext, MQ } from '../hooks/useGsapContext'
 import { COPY, SECTION_LABELS } from '../data/site'
 import { IMAGES } from '../data/images'
 import { SectionLabel } from './ui/SectionLabel'
-import { Steam } from './ui/Motifs'
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
@@ -55,20 +54,10 @@ export function BrewExperience() {
         },
       )
 
-      gsap.fromTo(
-        '[data-brew-steam]',
-        { autoAlpha: 0 },
-        {
-          autoAlpha: 1,
-          duration: 2.2,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: ref.current, start: 'top 55%', once: true, markers },
-        },
-      )
     })
 
     mm.add(MQ.reduced, () => {
-      gsap.set('[data-brew-word] > span,[data-brew-close],[data-brew-steam]', {
+      gsap.set('[data-brew-word] > span,[data-brew-close]', {
         autoAlpha: 1,
         y: 0,
         yPercent: 0,
@@ -107,14 +96,6 @@ export function BrewExperience() {
               'linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 72%, transparent) 0%, transparent 22%, transparent 74%, color-mix(in srgb, var(--page-bg) 78%, transparent) 100%)',
           }}
         />
-      </div>
-
-      <div
-        data-brew-steam
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-[16%] h-[44vh] w-[30vw] -translate-x-1/2 opacity-0 lg:left-[64%]"
-      >
-        <Steam className="h-full w-full" opacity={0.42} />
       </div>
 
       <div className="shell relative py-[clamp(96px,18vh,220px)]">

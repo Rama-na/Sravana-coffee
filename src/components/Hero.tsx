@@ -50,6 +50,7 @@ export function Hero({ ready }: { ready: boolean }) {
           .fromTo('[data-hero-meta]', { autoAlpha: 0 }, { autoAlpha: 1, duration: DUR.medium }, 0.9)
           .fromTo('[data-hero-cue]', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: DUR.medium }, 1.15)
           .fromTo('[data-hero-drift]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 2, stagger: 0.2 }, 1)
+          .fromTo('[data-hero-bag]', { autoAlpha: 0, y: -46, rotate: -6 }, { autoAlpha: 1, y: 0, rotate: 0, duration: 2.2, ease: 'power2.out' }, 0.25)
 
         // the scroll cue breathes, slowly, forever
         gsap.to('[data-cue-line]', {
@@ -66,7 +67,7 @@ export function Hero({ ready }: { ready: boolean }) {
 
       mm.add(MQ.reduced, () => {
         gsap.set(
-          '[data-hero-plate],[data-hero-year] span,[data-hero-est],[data-hero-seal],[data-hero-eyebrow],[data-hero-meta],[data-hero-cue],[data-hero-badge],[data-hero-drift]',
+          '[data-hero-plate],[data-hero-year] span,[data-hero-est],[data-hero-seal],[data-hero-eyebrow],[data-hero-meta],[data-hero-cue],[data-hero-badge],[data-hero-drift],[data-hero-bag]',
           { autoAlpha: 1, y: 0, x: 0, yPercent: 0, scale: 1, rotate: 0 },
         )
       })
@@ -100,6 +101,7 @@ export function Hero({ ready }: { ready: boolean }) {
           .fromTo('[data-hero-support]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -24, ease: 'none', duration: 0.4 }, 0)
           .fromTo('[data-hero-cue],[data-hero-badge]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 24, ease: 'none', duration: 0.22 }, 0)
           .fromTo('[data-hero-drift]', { yPercent: 0, autoAlpha: 1 }, { yPercent: -140, autoAlpha: 0, ease: 'none', stagger: 0.08 }, 0)
+          .fromTo('[data-hero-bag]', { yPercent: 0, autoAlpha: 1 }, { yPercent: -34, autoAlpha: 0, ease: 'none', duration: 0.72 }, 0)
       })
     },
     [ready],
@@ -148,6 +150,24 @@ export function Hero({ ready }: { ready: boolean }) {
           }}
         />
 
+        {/* the bag — where the page's bean stream comes from --------------- */}
+        <div
+          data-hero-bag
+          className="pointer-events-none absolute right-[2%] top-[-8%] z-0 w-[min(40vw,320px)] opacity-0 sm:right-[4%] lg:right-[6%] lg:top-[-5%] lg:w-[min(24vw,336px)]"
+        >
+          <span data-bean-origin className="relative block">
+            <img
+              src={IMAGES.heroBag.src}
+              alt=""
+              width={IMAGES.heroBag.width}
+              height={IMAGES.heroBag.height}
+              fetchPriority="high"
+              decoding="async"
+              className="w-full opacity-80"
+            />
+          </span>
+        </div>
+
         {/* drifting beans -------------------------------------------------- */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
           <span data-hero-drift className="absolute left-[7%] top-[26%] block w-14 rotate-[-24deg] opacity-0 lg:w-20">
@@ -160,18 +180,15 @@ export function Hero({ ready }: { ready: boolean }) {
 
         {/* top rail -------------------------------------------------------- */}
         <div className="shell flex items-start justify-between pt-[clamp(84px,13vh,132px)]">
-          <p data-hero-eyebrow className="meta opacity-0" style={{ color: 'var(--ink-soft)' }}>
-            {COPY.hero.eyebrow}
-          </p>
-          <p
-            data-hero-meta
-            className="meta hidden text-right opacity-0 sm:block"
-            style={{ color: 'var(--ink-faint)' }}
-          >
-            13.08° N
-            <br />
-            80.27° E
-          </p>
+          <div>
+            <p data-hero-eyebrow className="meta opacity-0" style={{ color: 'var(--ink-soft)' }}>
+              {COPY.hero.eyebrow}
+            </p>
+            <p data-hero-meta className="meta mt-2 opacity-0" style={{ color: 'var(--ink-faint)' }}>
+              13.08° N · 80.27° E
+            </p>
+          </div>
+
         </div>
 
         {/* the stamp ------------------------------------------------------- */}

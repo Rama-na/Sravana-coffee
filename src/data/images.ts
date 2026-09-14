@@ -20,6 +20,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 import heroBeansSrc from '../assets/images/hero-beans.webp'
+import heroBagSrc from '../assets/images/hero-bag.webp'
 import heritageThenSrc from '../assets/images/heritage-then.webp'
 import heritageTodaySrc from '../assets/images/heritage-today.webp'
 import journeyBeanSrc from '../assets/images/journey-bean.webp'
@@ -57,6 +58,12 @@ export const IMAGES = {
     alt: 'Roasted coffee beans filling the frame',
     width: 1680,
     height: 1120,
+  },
+  heroBag: {
+    src: heroBagSrc,
+    alt: '',
+    width: 900,
+    height: 1200,
   },
   heritageThen: {
     src: heritageThenSrc,
