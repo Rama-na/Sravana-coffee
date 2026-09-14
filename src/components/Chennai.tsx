@@ -1,11 +1,12 @@
 import { useRef } from 'react'
-import { gsap, revealUp, splitReveal } from '../lib/animations'
+import { gsap, revealUp } from '../lib/animations'
 import { useGsapContext, MQ } from '../hooks/useGsapContext'
 import { COPY, SECTION_LABELS, BRAND, SITE_CONFIG } from '../data/site'
 import { IMAGES } from '../data/images'
 import { SectionLabel } from './ui/SectionLabel'
 import { Figure } from './ui/Figure'
 import { ButtonLink } from './ui/Button'
+import { ScrollFloat } from './reactbits/ScrollFloat'
 import { FilterRings } from './ui/Motifs'
 
 /**
@@ -23,8 +24,6 @@ export function Chennai() {
 
   useGsapContext(ref, (mm) => {
     mm.add(MQ.motion, () => {
-      const head = ref.current?.querySelector('[data-chennai-head]')
-      if (head) splitReveal(head, { start: 'top 84%' })
       revealUp('[data-reveal]', { trigger: ref.current!, start: 'top 76%', y: 32 })
       gsap.to('[data-chennai-rings]', {
         rotate: 26,
@@ -32,7 +31,7 @@ export function Chennai() {
         scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom top', scrub: 1.4 },
       })
     })
-    mm.add(MQ.reduced, () => gsap.set('[data-reveal],[data-chennai-head]', { autoAlpha: 1, y: 0 }))
+    mm.add(MQ.reduced, () => gsap.set('[data-reveal]', { autoAlpha: 1, y: 0 }))
   })
 
   return (
@@ -42,12 +41,12 @@ export function Chennai() {
 
         <div className="mt-[clamp(44px,7vh,96px)] grid grid-cols-12 items-center gap-x-8 gap-y-[clamp(40px,6vh,72px)]">
           <div className="col-span-12 lg:col-span-6">
-            <h2
-              data-chennai-head
-              className="text-[clamp(2.6rem,7.4vw,5.8rem)]"
-              style={{ visibility: 'hidden' }}
-            >
-              {COPY.chennai.headline}
+            {/* One section reads letter by letter rather than line by line, so
+                the page never settles into a single reveal mannerism. */}
+            <h2 className="text-[clamp(2.6rem,7.4vw,5.8rem)]">
+              <ScrollFloat as="span" className="block">
+                {COPY.chennai.headline}
+              </ScrollFloat>
             </h2>
             <p
               data-reveal
