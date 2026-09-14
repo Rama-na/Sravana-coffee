@@ -18,7 +18,7 @@ const COLUMNS: { image: ImageAsset; ratio: string; index: string }[][] = [
   ],
   [
     { image: IMAGES.galleryTumbler, ratio: '1 / 1', index: '03' },
-    { image: IMAGES.galleryChennai, ratio: '3 / 2', index: '06' },
+    { image: IMAGES.galleryCounter, ratio: '3 / 2', index: '06' },
   ],
 ]
 

@@ -5,14 +5,18 @@
  *  Every image on the site is imported here and referenced by a semantic key.
  *  Vite rewrites these URLs for the GitHub Pages base path automatically.
  *
- *  ⚠️  All files in src/assets/images/ are generated placeholders
- *      (see scripts/generate-placeholder-art.mjs). To use real photography:
+ *  Most entries are now real Saravana Coffee photography. The masters live in
+ *  src/assets/source/ and scripts/build-images.mjs crops and compresses them
+ *  into src/assets/images/ — so a re-crop is a change to that script, never to
+ *  a component.
  *
- *      1. Export the photo as .webp, ~1600–2000px on the long edge
- *      2. Save it over the matching file in src/assets/images/
- *      3. Update the `alt` text below — nothing else changes
+ *  Entries marked `generated: true` are still art-directed placeholder
+ *  artwork from scripts/generate-placeholder-art.mjs. They are the remaining
+ *  shot list; see the README.
  *
- *  Alt text is part of the manifest so it can never drift from the image.
+ *  Replacing one: drop a .webp over the matching file in src/assets/images/
+ *  (or add it to src/assets/source/ and give it a crop in build-images.mjs),
+ *  then update `width`, `height` and `alt` below. Nothing else changes.
  * ═══════════════════════════════════════════════════════════════════════════
  */
 import heroBeansSrc from '../assets/images/hero-beans.webp'
@@ -31,6 +35,7 @@ import galleryPowderSrc from '../assets/images/gallery-powder.webp'
 import galleryFilterSrc from '../assets/images/gallery-filter.webp'
 import galleryTumblerSrc from '../assets/images/gallery-tumbler.webp'
 import galleryRoasterySrc from '../assets/images/gallery-roastery.webp'
+import galleryCounterSrc from '../assets/images/gallery-counter.webp'
 import galleryChennaiSrc from '../assets/images/gallery-chennai.webp'
 import groundsTextureSrc from '../assets/images/grounds-texture.webp'
 
@@ -42,38 +47,40 @@ export interface ImageAsset {
   height: number
   /** Optional editorial caption shown beside the frame. */
   caption?: string
+  /** True while this slot is still placeholder artwork rather than a photo. */
+  generated?: true
 }
 
 export const IMAGES = {
   heroBeans: {
     src: heroBeansSrc,
-    alt: 'Roasted coffee beans photographed close up, lit from one side',
-    width: 1920,
-    height: 1280,
+    alt: 'Roasted coffee beans filling the frame',
+    width: 1680,
+    height: 1120,
   },
   heritageThen: {
     src: heritageThenSrc,
-    alt: 'Faded archival image of roasted coffee beans',
-    width: 1100,
-    height: 1450,
-    caption: 'The first roast',
+    alt: 'A brass vessel, a striped cotton cloth and a brass plate of roasted coffee beans',
+    width: 1000,
+    height: 1318,
+    caption: 'The way it has always been made',
   },
   heritageToday: {
     src: heritageTodaySrc,
-    alt: 'Freshly roasted coffee beans today',
-    width: 1100,
-    height: 820,
-    caption: 'The same roast, thirty years on',
+    alt: 'Freshly roasted coffee beans inside an opened pack',
+    width: 1300,
+    height: 970,
+    caption: 'The same roast, packed today',
   },
   journeyBean: {
     src: journeyBeanSrc,
-    alt: 'Macro view of a few whole roasted coffee beans',
-    width: 900,
-    height: 1240,
+    alt: 'Roasted coffee beans, close up',
+    width: 853,
+    height: 1174,
   },
   journeyRoast: {
     src: journeyRoastSrc,
-    alt: 'Coffee beans tumbling in the heat of a roasting drum',
+    alt: 'Roasted beans falling from the drum into the cooling tray',
     width: 1500,
     height: 940,
   },
@@ -82,42 +89,46 @@ export const IMAGES = {
     alt: 'Freshly ground coffee, close up',
     width: 1100,
     height: 1100,
+    generated: true,
   },
   journeyBrew: {
     src: journeyBrewSrc,
-    alt: 'Filter coffee in a stainless steel tumbler and davara',
-    width: 1200,
-    height: 1000,
+    alt: 'A stainless steel tumbler of filter coffee, frothed, resting in its davara',
+    width: 1116,
+    height: 931,
   },
   brewHero: {
     src: brewHeroSrc,
-    alt: 'A tumbler of South Indian filter coffee resting in its davara, lit from a window',
-    width: 1920,
-    height: 1200,
+    alt: 'A tumbler of filter coffee, a stainless steel coffee filter and a brass vessel on a table',
+    width: 1843,
+    height: 1152,
   },
   blendClassic: {
     src: blendClassicSrc,
     alt: 'Saravana Coffee pack — classic filter blend with chicory',
     width: 1000,
     height: 1250,
+    generated: true,
   },
   blendPure: {
     src: blendPureSrc,
     alt: 'Saravana Coffee pack — pure blend without chicory',
     width: 1000,
     height: 1250,
+    generated: true,
   },
   productPack: {
     src: productPackSrc,
-    alt: 'Saravana Coffee retail pack photographed on a warm background',
+    alt: 'Saravana Coffee retail pack on a warm background',
     width: 1400,
     height: 1500,
+    generated: true,
   },
   galleryBeans: {
     src: galleryBeansSrc,
     alt: 'Roasted beans filling the frame',
-    width: 1000,
-    height: 1320,
+    width: 760,
+    height: 1003,
     caption: 'Whole bean',
   },
   galleryPowder: {
@@ -126,27 +137,35 @@ export const IMAGES = {
     width: 1000,
     height: 760,
     caption: 'Ground to order',
+    generated: true,
   },
   galleryFilter: {
     src: galleryFilterSrc,
     alt: 'A traditional stainless steel South Indian coffee filter',
-    width: 900,
-    height: 1150,
+    width: 800,
+    height: 1021,
     caption: 'The filter',
   },
   galleryTumbler: {
     src: galleryTumblerSrc,
-    alt: 'Filter coffee in a tumbler and davara',
-    width: 1000,
-    height: 1000,
+    alt: 'The frothed surface of filter coffee in a steel tumbler',
+    width: 860,
+    height: 860,
     caption: 'Tumbler & davara',
   },
   galleryRoastery: {
     src: galleryRoasterySrc,
-    alt: 'The roastery interior at night',
+    alt: 'The roasting drum discharging a finished batch',
     width: 1400,
-    height: 900,
+    height: 899,
     caption: 'The roastery',
+  },
+  galleryCounter: {
+    src: galleryCounterSrc,
+    alt: 'A brass vessel and a striped cotton cloth on the counter',
+    width: 1100,
+    height: 734,
+    caption: 'The counter',
   },
   galleryChennai: {
     src: galleryChennaiSrc,
@@ -154,13 +173,20 @@ export const IMAGES = {
     width: 1200,
     height: 800,
     caption: 'Chennai, 6 a.m.',
+    generated: true,
   },
   groundsTexture: {
     src: groundsTextureSrc,
     alt: '',
     width: 1600,
     height: 1000,
+    generated: true,
   },
 } satisfies Record<string, ImageAsset>
 
 export type ImageKey = keyof typeof IMAGES
+
+/** Slots still waiting on real photography — used by the README shot list. */
+export const PENDING_PHOTOGRAPHY = (Object.keys(IMAGES) as ImageKey[]).filter(
+  (k) => 'generated' in IMAGES[k],
+)
