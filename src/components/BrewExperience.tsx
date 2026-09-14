@@ -88,13 +88,23 @@ export function BrewExperience() {
           height={IMAGES.brewHero.height}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover opacity-[0.55] will-change-transform"
+          className="h-full w-full object-cover opacity-[0.88] will-change-transform"
+        />
+        {/* Directional, not uniform: heavy over the type column on the left,
+            almost clear over the tumbler on the right, so the photograph is
+            visible and the copy still clears contrast. */}
+        <span
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(96deg, color-mix(in srgb, var(--page-bg) 94%, transparent) 0%, color-mix(in srgb, var(--page-bg) 86%, transparent) 38%, color-mix(in srgb, var(--page-bg) 34%, transparent) 74%, color-mix(in srgb, var(--page-bg) 52%, transparent) 100%)',
+          }}
         />
         <span
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 92%, transparent) 0%, color-mix(in srgb, var(--page-bg) 46%, transparent) 38%, color-mix(in srgb, var(--page-bg) 88%, transparent) 100%)',
+              'linear-gradient(180deg, color-mix(in srgb, var(--page-bg) 72%, transparent) 0%, transparent 22%, transparent 74%, color-mix(in srgb, var(--page-bg) 78%, transparent) 100%)',
           }}
         />
       </div>

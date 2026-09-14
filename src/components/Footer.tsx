@@ -131,7 +131,7 @@ export function Footer() {
           style={{ borderColor: 'var(--rule)' }}
         >
           <div className="flex items-center gap-4">
-            <Logo variant="mark" className="h-9 w-9" ink="#F4E5C4" field="#031B46" />
+            <Logo variant="mark" className="h-10 w-10" />
             <span className="meta" style={{ color: 'var(--ink-faint)' }}>
               © {new Date().getFullYear()} {BRAND.name}
             </span>

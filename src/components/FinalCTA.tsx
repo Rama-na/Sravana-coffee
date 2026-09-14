@@ -79,7 +79,7 @@ export function FinalCTA() {
 
       <div className="shell-narrow relative">
         <span data-cta-seal className="mx-auto block w-[clamp(96px,11vw,142px)] opacity-0">
-          <Logo variant="full" className="w-full" ink="#073C9D" field="#F4E5C4" />
+          <Logo variant="full" className="w-full" />
         </span>
 
         <h2

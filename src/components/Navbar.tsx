@@ -135,7 +135,7 @@ export function Navbar() {
             className="shrink-0"
             aria-label="Saravana Coffee — back to top"
           >
-            <Logo variant="compact" ink="currentColor" field="var(--page-bg)" />
+            <Logo variant="compact" priority />
           </a>
 
           <ul className="hidden items-center gap-9 md:flex">

@@ -94,7 +94,7 @@ export function Hero({ ready }: { ready: boolean }) {
           .fromTo('[data-hero-year]', { scale: 1, yPercent: 0, autoAlpha: 1 }, { scale: 1.3, autoAlpha: 0, yPercent: 12, ease: 'none' }, 0)
           .fromTo('[data-hero-est]', { autoAlpha: 1, x: 0 }, { autoAlpha: 0, x: -30, ease: 'none', duration: 0.35 }, 0)
           .fromTo('[data-hero-plate]', { scale: 1.06, autoAlpha: 1 }, { scale: 1.18, autoAlpha: 1, ease: 'none' }, 0)
-          .fromTo('[data-hero-plate] img', { opacity: 0.42 }, { opacity: 0.66, ease: 'none' }, 0)
+          .fromTo('[data-hero-plate] img', { opacity: 0.36 }, { opacity: 0.6, ease: 'none' }, 0)
           .fromTo('[data-hero-wash]', { autoAlpha: 1 }, { autoAlpha: 0.82, ease: 'none' }, 0)
           .fromTo('[data-hero-eyebrow],[data-hero-meta]', { autoAlpha: 1 }, { autoAlpha: 0, ease: 'none', duration: 0.28 }, 0)
           .fromTo('[data-hero-support]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -24, ease: 'none', duration: 0.4 }, 0)
@@ -122,7 +122,7 @@ export function Hero({ ready }: { ready: boolean }) {
             height={IMAGES.heroBeans.height}
             fetchPriority="high"
             decoding="sync"
-            className="h-full w-full object-cover opacity-[0.42]"
+            className="h-full w-full object-cover opacity-[0.36]"
           />
         </div>
         {/* wash: keeps the centre dark so the seal always has its ground --- */}
@@ -196,7 +196,7 @@ export function Hero({ ready }: { ready: boolean }) {
                     'radial-gradient(closest-side, color-mix(in srgb, var(--page-bg) 88%, transparent), transparent 72%)',
                 }}
               />
-              <Logo variant="full" className="w-full" ink="#073C9D" field="#F4E5C4" />
+              <Logo variant="full" className="w-full" priority />
             </span>
 
             <span
