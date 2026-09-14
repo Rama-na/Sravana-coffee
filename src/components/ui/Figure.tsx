@@ -15,6 +15,8 @@ interface FigureProps {
   index?: string
   priority?: boolean
   sizes?: string
+  /** Caps the frame height so a tall crop can never exceed the viewport. */
+  maxHeight?: string
 }
 
 /**
@@ -30,6 +32,7 @@ export function Figure({
   caption,
   index,
   priority = false,
+  maxHeight,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw',
 }: FigureProps) {
   const frameRef = useRef<HTMLDivElement>(null)
@@ -53,7 +56,7 @@ export function Figure({
       <div
         ref={frameRef}
         className="img-frame img-hover"
-        style={{ aspectRatio: ratio ?? `${image.width} / ${image.height}` }}
+        style={{ aspectRatio: ratio ?? `${image.width} / ${image.height}`, maxHeight }}
       >
         <img
           src={image.src}

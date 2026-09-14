@@ -236,8 +236,9 @@ Nothing in this list was guessed. Each is a deliberate placeholder.
 - [ ] **All 18 photographs** — see the shot list above
 - [ ] **The original logo vector**, if it exists
 - [ ] **Confirm the shop address** before showing more than "Velachery · Chennai"
-- [ ] **A social preview image** at `public/og-image.png` (1200 × 630) — the
-      `og:image` tag already points at it
+- [ ] **A social preview image**, optionally — `public/og-image.jpg` is
+      generated from the site's own seal and type; replace it with real
+      photography when you have it (1200 × 630)
 - [ ] **The markets list** in `MARKETS` (`src/data/site.ts`) — the current
       countries are examples, not a shipping guarantee
 - [ ] **Confirm the product descriptions** — they describe method only, and make

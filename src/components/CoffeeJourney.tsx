@@ -147,6 +147,7 @@ export function CoffeeJourney() {
                 image={STEP_IMAGES[i]}
                 ratio={PANEL[i].ratio}
                 parallax={0}
+                maxHeight="56svh"
                 sizes="(max-width: 1023px) 100vw, 45vw"
               />
               <div className="mt-6 flex items-start gap-5 border-t pt-5" style={{ borderColor: 'var(--rule)' }}>

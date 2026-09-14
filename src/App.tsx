@@ -85,7 +85,7 @@ export default function App() {
       <main id="main">
         <Hero ready={ready} />
 
-        <ThemeShift from="midnight" to="cream" height={50}>
+        <ThemeShift from="midnight" to="cream" height={38}>
           <p
             className="mx-auto max-w-[26ch] font-display text-[clamp(1.2rem,3.2vw,2.2rem)] italic leading-snug"
             style={{ color: 'var(--ink)' }}
@@ -99,30 +99,30 @@ export default function App() {
         <CoffeeJourney />
         <RoastTransition />
 
-        <ThemeShift from="coffee" to="royal" height={48} />
+        <ThemeShift from="coffee" to="royal" height={40} />
         <BlendSelector selected={blend} onSelect={setBlend} />
 
-        <ThemeShift from="royal" to="paper" height={48} />
+        <ThemeShift from="royal" to="paper" height={40} />
         <ProductShowcase selected={blend} onSelect={setBlend} />
 
-        <ThemeShift from="paper" to="coffee" height={50}>
+        <ThemeShift from="paper" to="coffee" height={38}>
           <span className="mx-auto block w-[clamp(44px,5vw,72px)]" style={{ color: 'var(--ink)' }}>
             <BeanGlyph className="w-full opacity-40" stroke="currentColor" strokeWidth={2.6} />
           </span>
         </ThemeShift>
         <BrewExperience />
 
-        <ThemeShift from="coffee" to="paper" height={48} />
+        <ThemeShift from="coffee" to="paper" height={40} />
         <FilterCraft />
         <Gallery />
 
-        <ThemeShift from="paper" to="cream" height={46} />
+        <ThemeShift from="paper" to="cream" height={38} />
         <Chennai />
 
-        <ThemeShift from="cream" to="midnight" height={50} />
+        <ThemeShift from="cream" to="midnight" height={42} />
         <Worldwide />
 
-        <ThemeShift from="midnight" to="royal" height={46} />
+        <ThemeShift from="midnight" to="royal" height={38} />
         <FinalCTA />
 
         <ThemeShift from="royal" to="midnight" height={40} />

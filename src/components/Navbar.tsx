@@ -70,6 +70,9 @@ export function Navbar() {
       const onKey = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           setOpen(false)
+          // Focus must come back to the control that opened the panel,
+          // otherwise it falls to <body> and tabbing restarts from the top.
+          toggleRef.current?.focus()
           return
         }
         if (e.key !== 'Tab') return
@@ -164,6 +167,7 @@ export function Navbar() {
               ref={toggleRef}
               type="button"
               onClick={() => setOpen((v) => !v)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="site-menu"
               className="flex min-h-[44px] items-center gap-2.5 px-1 py-2"

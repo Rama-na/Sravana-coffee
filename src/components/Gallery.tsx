@@ -41,7 +41,12 @@ export function Gallery() {
   })
 
   return (
-    <section ref={ref} id="gallery" className="relative py-[var(--section-gap)]">
+    <section
+      ref={ref}
+      id="gallery"
+      aria-label="The roastery"
+      className="relative py-[var(--section-gap)]"
+    >
       <div className="shell">
         <SectionLabel {...SECTION_LABELS.gallery} />
 

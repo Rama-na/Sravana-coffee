@@ -78,7 +78,7 @@ export function FlowingMenu({ items, onSelect, className }: FlowingMenuProps) {
           >
             <span className="flex items-baseline gap-4 sm:gap-7">
               <span className="meta opacity-45">{String(i + 1).padStart(2, '0')}</span>
-              <span className="display text-[clamp(2.4rem,9vw,5.5rem)]">{item.label}</span>
+              <span className="display text-[clamp(2.9rem,11vw,5.5rem)]">{item.label}</span>
             </span>
             {item.meta && (
               <span className="meta hidden shrink-0 opacity-55 sm:block">{item.meta}</span>

@@ -134,6 +134,17 @@ function format([r, g, b, a]: RGBA): string {
     : `rgb(${round(r)} ${round(g)} ${round(b)} / ${a.toFixed(3)})`
 }
 
+/**
+ * A linear cross-fade between two far-apart colours parks the page on a flat
+ * mid-grey for a third of the band, which looks like a bug rather than a
+ * transition. Smootherstep applied twice holds near each end and crosses the
+ * middle quickly, so the muddy zone is a tenth of the band instead of a third.
+ */
+function crossfadeEase(t: number): number {
+  const ss = (x: number) => x * x * x * (x * (x * 6 - 15) + 10)
+  return ss(ss(t))
+}
+
 /** Pre-parses a theme pair so the scroll handler only does cheap maths. */
 export function themeInterpolator(from: ThemeName, to: ThemeName) {
   const pairs = VARS.map(([key, cssVar]) => ({
@@ -146,7 +157,7 @@ export function themeInterpolator(from: ThemeName, to: ThemeName) {
   const toLight = light(to)
 
   return (t: number, el: HTMLElement = document.documentElement) => {
-    const p = t < 0 ? 0 : t > 1 ? 1 : t
+    const p = crossfadeEase(t < 0 ? 0 : t > 1 ? 1 : t)
     for (const { cssVar, a, b } of pairs) {
       el.style.setProperty(
         cssVar,

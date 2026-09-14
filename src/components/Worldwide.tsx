@@ -97,8 +97,8 @@ export function Worldwide() {
               CHENNAI
             </text>
             <text
-              x="1110"
-              y="106"
+              x="1128"
+              y="74"
               textAnchor="end"
               className="meta"
               fill="var(--ink-faint)"

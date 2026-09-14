@@ -66,7 +66,7 @@ export function Hero({ ready }: { ready: boolean }) {
 
       mm.add(MQ.reduced, () => {
         gsap.set(
-          '[data-hero-plate],[data-hero-year] span,[data-hero-est],[data-hero-seal],[data-hero-eyebrow],[data-hero-meta],[data-hero-cue],[data-hero-drift]',
+          '[data-hero-plate],[data-hero-year] span,[data-hero-est],[data-hero-seal],[data-hero-eyebrow],[data-hero-meta],[data-hero-cue],[data-hero-badge],[data-hero-drift]',
           { autoAlpha: 1, y: 0, x: 0, yPercent: 0, scale: 1, rotate: 0 },
         )
       })
@@ -98,7 +98,7 @@ export function Hero({ ready }: { ready: boolean }) {
           .fromTo('[data-hero-wash]', { autoAlpha: 1 }, { autoAlpha: 0.82, ease: 'none' }, 0)
           .fromTo('[data-hero-eyebrow],[data-hero-meta]', { autoAlpha: 1 }, { autoAlpha: 0, ease: 'none', duration: 0.28 }, 0)
           .fromTo('[data-hero-support]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -24, ease: 'none', duration: 0.4 }, 0)
-          .fromTo('[data-hero-cue]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 24, ease: 'none', duration: 0.22 }, 0)
+          .fromTo('[data-hero-cue],[data-hero-badge]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 24, ease: 'none', duration: 0.22 }, 0)
           .fromTo('[data-hero-drift]', { yPercent: 0, autoAlpha: 1 }, { yPercent: -140, autoAlpha: 0, ease: 'none', stagger: 0.08 }, 0)
       })
     },
@@ -133,6 +133,18 @@ export function Hero({ ready }: { ready: boolean }) {
           style={{
             background:
               'radial-gradient(120% 85% at 50% 46%, color-mix(in srgb, var(--page-bg) 92%, transparent) 0%, color-mix(in srgb, var(--page-bg) 78%, transparent) 42%, color-mix(in srgb, var(--page-bg) 42%, transparent) 100%)',
+          }}
+        />
+        {/* Dissolves the plate into the page background at the bottom edge.
+            Without it the sticky container ends on a hard horizontal seam as
+            the hero scrolls away — the one thing that would break the illusion
+            that this is all one continuous surface. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[38vh]"
+          style={{
+            background:
+              'linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--page-bg) 62%, transparent) 58%, var(--page-bg) 100%)',
           }}
         />
 
@@ -244,7 +256,11 @@ export function Hero({ ready }: { ready: boolean }) {
               </span>
             </button>
 
-            <p className="meta hidden opacity-40 sm:block" style={{ color: 'var(--ink)' }}>
+            <p
+              data-hero-badge
+              className="meta hidden opacity-40 sm:block"
+              style={{ color: 'var(--ink)' }}
+            >
               {BRAND.badgeLine}
             </p>
           </div>

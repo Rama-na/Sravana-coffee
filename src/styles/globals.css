@@ -139,8 +139,14 @@
   }
 
   #root {
+    /* isolation makes #root a blending boundary, so the grain overlay inside
+       it never reaches the <html> background. Without an opaque ground of its
+       own, transparent areas get lightened by the grain and every section edge
+       shows as a seam. */
     isolation: isolate;
+    background-color: var(--page-bg);
     overflow-x: clip;
+    min-height: 100svh;
   }
 
   h1,

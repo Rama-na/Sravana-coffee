@@ -21,7 +21,7 @@ interface ThemeShiftProps {
  * one continuous surface instead of a stack of coloured boxes. Any content
  * passed in fades out across the shift so contrast is never ambiguous.
  */
-export function ThemeShift({ from, to, height = 48, children, className }: ThemeShiftProps) {
+export function ThemeShift({ from, to, height = 40, children, className }: ThemeShiftProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useGsapContext(
@@ -31,8 +31,8 @@ export function ThemeShift({ from, to, height = 48, children, className }: Theme
 
       const st = ScrollTrigger.create({
         trigger: ref.current,
-        start: 'top 50%',
-        end: 'bottom 50%',
+        start: 'top 60%',
+        end: 'bottom 58%',
         markers,
         // Paint only while this band actually owns the viewport. Refreshes fire
         // every trigger at once; without the guard the last one to run wins.
@@ -64,8 +64,8 @@ export function ThemeShift({ from, to, height = 48, children, className }: Theme
             ease: 'none',
             scrollTrigger: {
               trigger: ref.current,
-              start: 'top 78%',
-              end: 'center 62%',
+              start: 'top 98%',
+              end: 'top 72%',
               scrub: 0.7,
               markers,
             },
@@ -77,8 +77,8 @@ export function ThemeShift({ from, to, height = 48, children, className }: Theme
           ease: 'none',
           scrollTrigger: {
             trigger: ref.current,
-            start: 'center 48%',
-            end: 'bottom 30%',
+            start: 'top 68%',
+            end: 'top 56%',
             scrub: 0.7,
             markers,
           },
